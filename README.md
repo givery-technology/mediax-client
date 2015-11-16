@@ -4,6 +4,12 @@
 ## Dev Server
 Dev: http://mediax.dev-ic.com/mediax.client
 
+## Developing
+
+201511
+Agent & Client frontend
+1. Top page (NEW): https://givery.backlog.jp/view/MDX-124
+
 ###Test account
 
 ```

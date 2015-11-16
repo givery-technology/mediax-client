@@ -77,7 +77,6 @@ class AppController extends Controller {
         if(!$this->Auth->user()){
                 $this->Auth->loginAction = array('admin'=>false,'controller' => 'users','action' => 'login');
                 $this->Auth->authenticate = array(
-                        // 'Form' => array('fields' => array('username' => 'email', 'password' => 'pwd'))
                         'Form' => array('userModel' => 'User', 'fields' => array('username' => 'email', 'password' => 'pwd'))
                 );     
                 AuthComponent::$sessionKey = 'Auth.User.user';

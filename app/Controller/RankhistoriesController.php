@@ -55,11 +55,9 @@ class RankhistoriesController extends AppController {
 
 		if ($this -> request -> is('post')) {
 			if (!empty($this -> request -> data['Rankhistory']['keyword'])) {
-				//$users = $this->Rankhistory->Keyword->User->find('list', array('fields' => array('User.id', 'User.id'), 'conditions' => array('User.company LIKE' => '%' . mb_strtolower(trim($this->request->data['Rankhistory']['keyword']), 'UTF-8') . '%')));
 				$conds['OR']['Rankhistory.url LIKE'] = '%' . mb_strtolower(trim($this -> request -> data['Rankhistory']['keyword']), 'UTF-8') . '%';
 				$conds['OR']['Keyword.Keyword LIKE'] = '%' . mb_strtolower(trim($this -> request -> data['Rankhistory']['keyword']), 'UTF-8') . '%';
 				$conds['OR']['Keyword.url LIKE'] = '%' . mb_strtolower(trim($this -> request -> data['Rankhistory']['keyword']), 'UTF-8') . '%';
-				//$conds['OR']['Keyword.UserID'] = $users;
 			}
 		}
 
@@ -109,7 +107,6 @@ class RankhistoriesController extends AppController {
 		$fields = array();
 		$fields = array('Keyword.id', 'Keyword.Keyword', 'Keyword.Url', 'User.company');
 		$keyword = $this -> Rankhistory -> Keyword -> find('first', array('conditions' => array('Keyword.ID' => $keyID), 'fields' => $fields));
-		// $keyword['Keyword']['Keyword']
 
 		$limit = 30;
 		$conds = array();

@@ -2,10 +2,16 @@
 	<div class="nav-collapse sidebar-nav collapse navbar-collapse bs-navbar-collapse">
 		<ul class="nav nav-tabs nav-stacked main-menu">
 <!-- home -->
-			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_index'?'active':'' ?>">
-				<a href="<?php echo $this->webroot?>rankhistories/client_index" class="title_link" >
+			<li class="<?php echo $this->here==$this->webroot.'ranklogs/index'?'active':'' ?>">
+				<a href="<?php echo $this->webroot?>ranklogs/index" class="title_link" >
 					<i class="icon-home"></i>
 					<?php echo __('ホーム'); ?>&nbsp;
+				</a>
+			</li>
+<!-- home old-->
+			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_index'?'active':'' ?>">
+				<a href="<?php echo $this->webroot?>rankhistories/client_index" class="title_link" >
+					<?php echo __('ホーム(旧)'); ?>&nbsp;
 				</a>
 			</li>
 <!-- notice -->
@@ -33,7 +39,10 @@
 			<li>&npsp;</li>
 <!-- logout -->
 			<li>
-				<a href="<?php echo $this->webroot?>users/logout" class="title_link <?php echo $this->here==$this->webroot.'users/logout'?'active':'' ?>" ><i class="icon-lock"></i>ログアウト</a>
+				<a href="<?php echo $this->webroot?>users/logout" class="title_link <?php echo $this->here==$this->webroot.'users/logout'?'active':'' ?>" >
+					<i class="icon-lock"></i>
+					<?php echo __('ログアウト'); ?>
+				</a>
 			</li>
 		</ul>
 	</div>

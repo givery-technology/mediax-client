@@ -162,5 +162,18 @@ class LayoutHelper extends Helper {
 		return $history;
 	}
 
+/*------------------------------------------------------------------------------------------------------------
+ *  best rank logic
+ * 
+ * author lecaoquochung@gmail.com
+ * created 201510
+ *-----------------------------------------------------------------------------------------------------------*/
+	public function bestRank($rank_json) {
+		@$min = min(array_diff($rank_json, array(0)));
+		$min = ($min==True)?$min:0;
+		
+		return $min;
+	}
+
 }
 ?>
