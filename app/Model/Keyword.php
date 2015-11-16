@@ -94,7 +94,20 @@ class Keyword extends AppModel {
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        )
+        ),
+        'Ranklog' => array(
+            'className' => 'Ranklog',
+            'foreignKey' => 'keyword_id',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        ),
     );
 
 /**
@@ -103,18 +116,6 @@ class Keyword extends AppModel {
  * @var array
  */
     public $validate = array(
-        /*
-        'ID' => array(
-            'numeric' => array(
-                'rule' => array('numeric'),
-                //'message' => 'Your custom message here',
-                //'allowEmpty' => false,
-                //'required' => false,
-                //'last' => false, // Stop validation after this rule
-                //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        */
         'UserID' => array(
             'numeric' => array(
                 'rule' => array('numeric'),
