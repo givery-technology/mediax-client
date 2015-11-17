@@ -8,12 +8,6 @@
 					<?php echo __('ホーム'); ?>&nbsp;
 				</a>
 			</li>
-<!-- home old-->
-			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_index'?'active':'' ?>">
-				<a href="<?php echo $this->webroot?>rankhistories/client_index" class="title_link" >
-					<?php echo __('ホーム(旧)'); ?>&nbsp;
-				</a>
-			</li>
 <!-- notice -->
 			<li class="<?php echo $this->here==$this->webroot.'notices/index'?'active':'' ?>">
 				<a href="<?php echo $this->webroot?>notices/index" class="title_link" >
@@ -22,13 +16,14 @@
 				</a>
 			</li>
 <!-- keyword -->
-			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_keyword'?'active':'' ?>">
-				<a href="<?php echo $this->webroot?>rankhistories/client_keyword" class="title_link" >
+			<li class="<?php echo $this->here==$this->webroot.'ranklogs/keyword'?'active':'' ?>">
+				<a href="<?php echo $this->webroot?>ranklogs/keyword" class="title_link" >
 					<i class="icon-align-justify"></i>
 					<?php echo __('キーワード詳細'); ?>
 					<span class="label label-info" id="count_client_keyword"></span>
 				</a>
 			</li>
+
 <!-- inquiry -->
 			<li class="<?php echo $this->here==$this->webroot.'users/client_inquiry'?'active':'' ?>">
 				<a href="<?php echo $this->webroot?>users/client_inquiry" class="title_link" >
@@ -36,7 +31,23 @@
 					<?php echo __('お問い合わせ'); ?>
 				</a>
 			</li>
-			<li>&npsp;</li>
+			<li>&npsp;</li
+				
+<!-- home old-->
+			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_index'?'active':'' ?>">
+				<a href="<?php echo $this->webroot?>rankhistories/client_index" class="title_link" >
+					<?php echo __('ホーム(旧)'); ?>&nbsp;
+				</a>
+			</li>
+<!-- keyword old-->
+			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_keyword'?'active':'' ?>">
+				<a href="<?php echo $this->webroot?>rankhistories/client_keyword" class="title_link" >
+					<i class="icon-align-justify"></i>
+					<?php echo __('キーワード詳細(旧)'); ?>
+					<span class="label label-info" id=""></span>
+				</a>
+			</li>
+							
 <!-- logout -->
 			<li>
 				<a href="<?php echo $this->webroot?>users/logout" class="title_link <?php echo $this->here==$this->webroot.'users/logout'?'active':'' ?>" >

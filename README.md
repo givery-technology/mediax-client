@@ -6,9 +6,7 @@ Dev: http://mediax.dev-ic.com/mediax.client
 
 ## Developing
 
-201511
-Agent & Client frontend
-1. Top page (NEW): https://givery.backlog.jp/view/MDX-124
+201511 Issue: https://github.com/givery-technology/mediax-client/milestones/2015-11
 
 ###Test account
 

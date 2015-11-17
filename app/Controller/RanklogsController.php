@@ -58,4 +58,38 @@ class RanklogsController extends AppController {
 		$this->set('search', $search);
 	}
 
+/*------------------------------------------------------------------------------------------------------------
+ * keyword
+ * 
+ * @author lecaoquochung@gmail.com
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @created 20151117
+ * @updated
+ *-----------------------------------------------------------------------------------------------------------*/	
+	public function keyword() {
+		$conds = array();
+		$conds['Keyword.Enabled'] = 1;
+		$conds['Keyword.nocontract'] = 0;
+		$conds['Keyword.UserID'] = $this -> Auth -> user('user.id');
+		$conds['OR'] = array( array('Keyword.rankend' => 0), array('Keyword.rankend >=' => date('Ymd')));
+		
+		$this -> Ranklog -> Keyword -> recursive = -1;
+		$this -> Ranklog -> Keyword -> Behaviors -> load('Containable');
+		$ranklogs = $this -> Ranklog -> Keyword -> find('all', array(
+			'conditions' => $conds, 
+			'fields' => array(
+				'Keyword.ID', 'Keyword.UserID', 'Keyword.Keyword', 'Keyword.Engine', 'Keyword.rankend', 'Keyword.Enabled', 'Keyword.nocontract', 'Keyword.Penalty', 'Keyword.Url'
+			), 
+			'contain' => array(
+				'Ranklog' => array('fields' => array(
+					'Ranklog.id', 'Ranklog.keyword', 'Ranklog.url', 'Ranklog.rank', 'Ranklog.rankdate', 'Ranklog.params'
+				), 
+				'conditions' => array('Ranklog.rankdate' => date('Y-m-d')), 
+			'order' => 'Ranklog.id DESC'), 'Duration', 'Extra'
+			),
+			'order' => 'Keyword.ID DESC'
+		));
+		$this -> set('ranklogs', $ranklogs);
+	}
+
 }
