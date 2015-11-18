@@ -1,9 +1,9 @@
 # User specific & automatically generated files #
 #################################################
-/lib/Cake/Console/Templates/skel/tmp/
-/dist
-/tags
-/app/tmp
+#/lib/Cake/Console/Templates/skel/tmp/
+#/dist
+#/tags
+#/app/tmp
 /app/Config/database.php
 /app/Config/bootstrap.php
 .gitignore 

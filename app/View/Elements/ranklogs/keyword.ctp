@@ -5,13 +5,14 @@
 		<div class="box">
 			<div class="">
 				<h2>
-					<span class="not-offer label label-info white-link"><?php echo $this->Html->link($ranklog['Keyword']['Keyword'], array('controller' => 'keywords', 'action' => 'view', $ranklog['Keyword']['ID'])); ?></span>
+					<span class="not-offer label label-info white-link"><?php echo $this->Html->link($ranklog['Keyword']['Keyword'], array('controller' => 'keywords', 'action' => 'ranklog', $ranklog['Keyword']['ID'])); ?></span>
 				</h2>
 				<span class="align-right">URL:<?php echo $this->Html->link($ranklog['Keyword']['Url'], $ranklog['Keyword']['Url'], array('target'=>'_blank','style'=>(!empty($ranklog['Keyword']['nocontract'])?'color:red':''))); ?></span>
 			</div>
 			<div class="box-content">
 				<table class="table table-bordered table-striped table-condensed">
 					<thead>
+<!-- ranklog -->
 						<tr>
 							<th class="" style="width:40%;">本日の順位</th>
 							<th class="">
@@ -21,6 +22,7 @@
 						</tr>
 					</thead>
 					<tbody>
+<!-- startdate -->
 						<tr>
 							<td class="">対策開始日</td>
 							<td class="">
@@ -36,6 +38,7 @@
                                 <?php echo ($flag==false)? '-':''; ?>
                             </td>
 						</tr>
+<!-- first rank-in -->
 						<tr>
 							<td class="">初達成日</td>
 							<td class="">
@@ -51,6 +54,7 @@
                                 <?php echo ($flag==false)? '-':''; ?>
                             </td>
 						</tr>
+<!-- engine -->
 						<tr>
 							<td class="">成果対象検索エンジン</td>
 							<td class="">
