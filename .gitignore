@@ -3,7 +3,7 @@
 /lib/Cake/Console/Templates/skel/tmp/
 /dist
 /tags
-/app/tmp
+#/app/tmp
 /app/Config/database.php
 /app/Config/bootstrap.php
 .gitignore 
