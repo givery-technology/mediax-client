@@ -28,7 +28,7 @@
 						<tr style="background:<?php echo $params['color'] ?>">
 <!-- keyword -->
 							<td style="<?php echo !empty($ranklog['Keyword']['nocontract'])?'color:red':'' ?>">
-								<?php echo $this->Html->link($ranklog['Keyword']['Keyword'], array('controller' => 'keywords', 'action' => 'ranklogs', $ranklog['Keyword']['ID']),array('style'=>(!empty($ranklog['Keyword']['nocontract'])?'color:red':''))); ?>
+								<?php echo $this->Html->link($ranklog['Keyword']['Keyword'], array('controller' => 'keywords', 'action' => 'ranklog', $ranklog['Keyword']['ID']),array('style'=>(!empty($ranklog['Keyword']['nocontract'])?'color:red':''))); ?>
 								<span class="kaiyaku"><?php echo (isset($ranklog['Keyword']['rankend']) && $ranklog['Keyword']['rankend'] != 0)? '(' .__('Keyword Cancel Estimate') .' ' .$ranklog['Keyword']['rankend'] .')' : '';?></span>
 								<?php echo ($ranklog['Keyword']['Penalty'])? $this->Html->image('yellowcard.gif') : '';?>
 							</td>
