@@ -175,5 +175,17 @@ class LayoutHelper extends Helper {
 		return $min;
 	}
 
+/*------------------------------------------------------------------------------------------------------------
+ *  strip hyphen (string)
+ * 
+ * author lecaoquochung@gmail.com
+ * created 201510
+ *-----------------------------------------------------------------------------------------------------------*/
+	public function stripHyphen($string) {
+		$string = str_replace('-', '', $string);
+		
+		return $string;
+	}
+
 }
 ?>

@@ -18,9 +18,9 @@
             <div class="box-content">
 <!-- CSV -->
                 <?php if(isset($this->request->data['Rankhistory']['RankDate_list']['month']) && isset($this->request->data['Rankhistory']['RankDate_list']['year'])): ?>
-                    <div class="margin-bottom-10"><?php echo $this->Html->link(__('CSV'), array('controller' => 'rankhistories', 'action' => 'csv_by_keyword',$keyword['Keyword']['ID'],$this->request->data['Rankhistory']['RankDate_list']['year'].'-'.$this->request->data['Rankhistory']['RankDate_list']['month']), array('class' => 'btn btn-success'));?></div>
+                    <div class="margin-bottom-10"><?php echo $this->Html->link(__('CSV'), array('controller' => 'ranklogs', 'action' => 'downloadCsv',$keyword['Keyword']['ID'],$this->request->data['Rankhistory']['RankDate_list']['year'].'-'.$this->request->data['Rankhistory']['RankDate_list']['month']), array('class' => 'btn btn-success'));?></div>
                 <?php else: ?>
-                    <div class="margin-bottom-10"><?php echo $this->Html->link(__('CSV'), array('controller' => 'rankhistories', 'action' => 'csv_by_keyword',$keyword['Keyword']['ID']), array('class' => 'btn btn-success'));?></div>
+                    <div class="margin-bottom-10"><?php echo $this->Html->link(__('CSV'), array('controller' => 'ranklogs', 'action' => 'downloadCsv',$keyword['Keyword']['ID']), array('class' => 'btn btn-success'));?></div>
                 <?php endif ?>
 <!-- History rank data -->
                  <?php echo $this->Form->create('Ranklog',array('class'=>'form-search','id'=>'RankhistoryViewForm_list')); ?>
@@ -75,8 +75,8 @@
 											$google_rank = 0;
 											$yahoo_rank = $rank['yahoo_jp'];
 										}else {
-											$google_rank = $rank['google_jp'];
-											$yahoo_rank = $rank['yahoo_jp'];
+											$google_rank = isset($rank['google_jp'])?$rank['google_jp']:$rank['google'];
+											$yahoo_rank = isset($rank['yahoo_jp'])?$rank['yahoo_jp']:$rank['yahoo'];
 										}
 										
 										
@@ -101,7 +101,7 @@
 										if ($keyword['Keyword']['Engine'] == 3 || $keyword['Keyword']['Engine'] == 10 || $keyword['Keyword']['Engine'] == 1 || $keyword['Keyword']['Engine'] == 2) {
 											# google rank
 											if ($google_rank > 0 && $google_rank <= 10 && $count_date <= $history_limit) {
-												$google_cache_link = '/rankcache_new/' . $rankhistory['Ranklog']['rankdate'] .'/' .md5(mb_convert_encoding($keyword['Keyword']['Keyword'] ."_google_jp", 'EUC-JP')) .'.html';
+												$google_cache_link = '/rankcache_new/' .$this->Layout->stripHyphen($rankhistory['Ranklog']['rankdate']) .'/' .md5(mb_convert_encoding($keyword['Keyword']['Keyword'] ."_google_jp", 'EUC-JP')) .'.html';
 												if(isset($this->request->params['paging']['Rankhistory'])) {
 													$cache_text = '<a href="../../../..' .$google_cache_link .'" target="_blank">キャッシュ</a> / ';
 												}else{
@@ -115,23 +115,25 @@
 											
 											# yahoo rank
 											if ($yahoo_rank > 0 && $yahoo_rank <= 10 && $count_date <= $history_limit) {
-												$yahoo_cache_link = 'http://' .$_SERVER['SERVER_NAME'] .'/rankcache_new/' .$rankhistory['Ranklog']['rankdate'] .'/' .md5(mb_convert_encoding($keyword['Keyword']['Keyword'] ."_yahoo_jp", 'EUC-JP')) .'.html';
+												$yahoo_cache_link = 'http://' .$_SERVER['SERVER_NAME'] .'/rankcache_new/' .$this->Layout->stripHyphen($rankhistory['Ranklog']['rankdate']) .'/' .md5(mb_convert_encoding($keyword['Keyword']['Keyword'] ."_yahoo_jp", 'EUC-JP')) .'.html';
 												$cache_text .= '<a href="' .$yahoo_cache_link .'" target="_blank">キャッシュ</a>';
 											} else if ($yahoo_rank > 0 && $yahoo_rank <= 10 && $count_date > $history_limit) {
 												$cache_text = '保存期間対象外';
 											} else {
 												$cache_text .= ' - ';
 											}
-										} else { # Search engine: not google_jp & yahoo_jp
-											if (($rankhistory['Ranklog']['rank'] > 0 && $rankhistory['Ranklog']['rank'] <= 10) || ($rankhistory['Ranklog']['rank'] > 10 && in_array($keyid, $showcache))) {
-												$cache_link = '/rankcache_new/' .$rank['RankDate'] .'/' .md5($keyword['Keyword']['Keyword'] ."_yahoo_jp") .'.html';
-												if(isset($this->request->params['paging']['Rankhistory'])) {
-													$cache_text = '<a href="../../../..' .$cache_link .'" target="_blank">キャッシュ</a> / ';
-												}else {
-													$cache_text = '<a href="../../..' .$cache_link .'" target="_blank">キャッシュ</a> / ';
-												}
-											}
-										}
+										} 
+										# Search engine: not google_jp & yahoo_jp
+										// else {
+											// if (($rankhistory['Ranklog']['rank'] > 0 && $rankhistory['Ranklog']['rank'] <= 10) || ($rankhistory['Ranklog']['rank'] > 10 && in_array($keyid, $showcache))) {
+												// $cache_link = '/rankcache_new/' .$rank['RankDate'] .'/' .md5($keyword['Keyword']['Keyword'] ."_yahoo_jp") .'.html';
+												// if(isset($this->request->params['paging']['Rankhistory'])) {
+													// $cache_text = '<a href="../../../..' .$cache_link .'" target="_blank">キャッシュ</a> / ';
+												// }else {
+													// $cache_text = '<a href="../../..' .$cache_link .'" target="_blank">キャッシュ</a> / ';
+												// }
+											// }
+										// }
 										echo $cache_text;
 	                                ?>
 	                            </td>
@@ -192,8 +194,8 @@
 			$google_rank = 0;
 			$yahoo_rank = $rank['yahoo_jp'];
 		}else {
-			$google_rank = $rank['google_jp'];
-			$yahoo_rank = $rank['yahoo_jp'];
+			$google_rank = isset($rank['google_jp'])?$rank['google_jp']:$rank['google'];
+			$yahoo_rank = isset($rank['yahoo_jp'])?$rank['yahoo_jp']:$rank['yahoo'];
 		}
 		
 		if($google_rank==0 && $yahoo_rank!=0){

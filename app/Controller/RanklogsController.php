@@ -92,4 +92,39 @@ class RanklogsController extends AppController {
 		$this -> set('ranklogs', $ranklogs);
 	}
 
+/*------------------------------------------------------------------------------------------------------------
+ * downloadCsv
+ * 
+ * @author lecaoquochung@gmail.com
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @created 20151117
+ * @updated
+ *-----------------------------------------------------------------------------------------------------------*/	
+	public function downloadCsv($keyID = null, $date = null) {
+		$this -> Ranklog -> Keyword -> recursive = 2;
+		$fields = array();
+		$fields = array('Keyword.ID', 'Keyword.Keyword', 'Keyword.Url', 'User.company');
+		$keyword = $this -> Ranklog -> Keyword -> find('first', array('conditions' => array('Keyword.ID' => $keyID), 'fields' => $fields));
+
+		$limit = 30;
+		$conds = array();
+		$conds['Ranklog.keyword_id'] = $keyID;
+		if (!empty($date)) {
+			$conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m")'] = date('Y-m', strtotime($date));
+			$limit = null;
+		}
+
+		$this -> export(array(
+			'conditions' => $conds, 
+			'fields' => array('Ranklog.rankdate', 'Ranklog.rank'), 
+			'order' => array('Ranklog.rankdate' => 'desc'),
+			'limit' => $limit, 
+			'mapHeader' => 'RANKLOG_KEYWORD', 
+			'insertHeader' => array($keyword['Keyword']['Keyword'], $keyword['User']['company'], $keyword['Keyword']['Url']), 
+			'filename' => $keyword['Keyword']['Keyword'], 
+			'callbackHeader' => 'header_csv_by_keyword', 
+			'callbackRow' => 'row_csv_by_keyword', 
+		));
+	}
+
 }
