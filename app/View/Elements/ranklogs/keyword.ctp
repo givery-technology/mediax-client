@@ -1,5 +1,5 @@
-<?php  foreach ($ranklogs as $ranklog): $rank = json_decode($ranklog['Ranklog'][0]['rank'], true); ?>
-<?php $params = json_decode($ranklog['Ranklog'][0]['params'],true) ?>
+<?php  foreach ($ranklogs as $ranklog): $rank = json_decode(@$ranklog['Ranklog'][0]['rank'], true); ?>
+<?php $params = json_decode(@$ranklog['Ranklog'][0]['params'],true) ?>
 <div class="row">	
 	<div class="col-lg-12">
 		<div class="box">
