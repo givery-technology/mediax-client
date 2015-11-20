@@ -1,2 +1,0 @@
-1448009157
-a:4:{s:2:"ID";a:6:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";N;s:6:"length";i:8;s:8:"unsigned";b:0;s:3:"key";s:7:"primary";}s:5:"KeyID";a:6:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";s:1:"0";s:6:"length";i:6;s:8:"unsigned";b:0;s:3:"key";s:5:"index";}s:9:"ExtraType";a:6:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";s:1:"0";s:6:"length";i:2;s:8:"unsigned";b:0;s:7:"comment";s:26:"1 - in top 5, 2 - in top 3";}s:5:"Price";a:5:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";s:1:"0";s:6:"length";i:10;s:8:"unsigned";b:0;}}
