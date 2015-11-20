@@ -1,2 +1,2 @@
-1447925548
+1448009062
 a:5:{s:2:"ID";a:6:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";N;s:6:"length";i:2;s:8:"unsigned";b:0;s:3:"key";s:7:"primary";}s:4:"Name";a:6:{s:4:"type";s:6:"string";s:4:"null";b:0;s:7:"default";s:0:"";s:6:"length";i:20;s:7:"collate";s:16:"sjis_japanese_ci";s:7:"charset";s:4:"sjis";}s:8:"ShowName";a:6:{s:4:"type";s:6:"string";s:4:"null";b:0;s:7:"default";N;s:6:"length";i:30;s:7:"collate";s:15:"utf8_unicode_ci";s:7:"charset";s:4:"utf8";}s:5:"Short";a:6:{s:4:"type";s:6:"string";s:4:"null";b:0;s:7:"default";s:0:"";s:6:"length";i:10;s:7:"collate";s:16:"sjis_japanese_ci";s:7:"charset";s:4:"sjis";}s:4:"Code";a:5:{s:4:"type";s:7:"integer";s:4:"null";b:0;s:7:"default";s:1:"0";s:6:"length";i:4;s:8:"unsigned";b:0;}}

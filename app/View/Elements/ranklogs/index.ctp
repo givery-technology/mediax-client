@@ -45,7 +45,7 @@
                             </td>
 <!-- actioms -->
 							<td class="actions">
-								<?php echo $this->Html->link(__('SEO対策中'), array('controller' => 'keywords', 'action' => 'ranklogs', $ranklog['Keyword']['ID']), array('class' => 'btn btn-success')); ?>
+								<?php echo $this->Html->link(__('SEO対策中'), array('controller' => 'keywords', 'action' => 'ranklog', $ranklog['Keyword']['ID']), array('class' => 'btn btn-success')); ?>
 							</td>
 					</tr>
 					<?php endforeach; ?>
