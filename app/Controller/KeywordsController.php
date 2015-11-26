@@ -241,7 +241,7 @@ class KeywordsController extends AppController {
         $conds['Ranklog.keyword_id'] = $id;
         $conds['Keyword.UserID'] = $this->Auth->user('user.id');
         
-        $data_rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 30, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+        $data_rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 30, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.rankdate DESC'));
 		
 		if($this->request->is('post')) {
             if($this->request->is('ajax')){
