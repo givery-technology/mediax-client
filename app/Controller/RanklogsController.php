@@ -45,7 +45,7 @@ class RanklogsController extends AppController {
 			'Ranklog.id', 'Ranklog.url', 'Ranklog.rank', 'Ranklog.rankdate', 'Ranklog.params', 
 			'Keyword.ID', 'Keyword.UserID', 'Keyword.Keyword', 'Keyword.Engine', 'Keyword.rankend', 'Keyword.Enabled', 'Keyword.nocontract', 'Keyword.Penalty', 'Keyword.Url'
 		);
-		$this -> set('ranklogs', $this -> Ranklog -> find('all', array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.modified DESC')));
+		$this -> set('ranklogs', $this -> Ranklog -> find('all', array('conditions' => $conds, 'fields' => $fields, 'order' => 'Keyword.ID DESC')));
 		$this -> set('user', $this -> Ranklog -> Keyword -> User -> find('list', array('fields' => array('User.id', 'User.company'))));
 		$this -> set('agent', $this -> Ranklog -> Keyword -> User -> find('list', array('fields' => array('User.id', 'User.agent'))));
 		
