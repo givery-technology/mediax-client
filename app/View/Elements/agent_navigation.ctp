@@ -34,17 +34,6 @@
 			</li>
 
 			<li>&npsp;</li>
-
-<!-- home old-->
-			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_index'?'active':'' ?>">
-				<a href="<?php echo $this->webroot?>rankhistories/client_index" class="title_link" > <i class="icon-home"></i> <?php echo __('ホーム（旧）'); ?></a>
-			</li>
-			
-<!-- keyword -->
-			<li class="<?php echo $this->here==$this->webroot.'rankhistories/client_keyword'?'active':'' ?>">
-				<a href="<?php echo $this->webroot?>rankhistories/client_keyword" class="title_link" > <i class="icon-align-justify"></i> <?php echo __('キーワード詳細（旧）'); ?>
-				<span class="label label-info" id=""></span> </a>
-			</li>
 			
 <!-- logout -->
 			<li>
