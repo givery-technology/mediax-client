@@ -276,7 +276,7 @@ class UsersController extends AppController {
     public function autologin($email = null, $pwd = null) {
         if ($this->request->is('get')) {
             if ($this->Auth->login()) {
-                return $this->redirect(array('controller'=>'rankhistories','action'=>'client_index'));
+                return $this->redirect(array('controller'=>'ranklogs','action'=>'index'));
             }
         }   
     }
