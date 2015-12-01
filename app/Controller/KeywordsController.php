@@ -215,6 +215,115 @@ class KeywordsController extends AppController {
         $this->set(compact('data_rankhistories'));
     }
 
+/*------------------------------------------------------------------------------------------------------------
+ * ranklog
+ * 
+ * @author lecaoquochung@gmail.com
+ * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @created 20151118
+ * @updated
+ *-----------------------------------------------------------------------------------------------------------*/	
+	public function ranklog($id = null) {
+		
+		$this->loadModel('Engine');
+        $engine_list = $this->Engine->find('all');
+        
+        $this->Keyword->id = $id;
+        if (!$this->Keyword->exists()) {
+            throw new NotFoundException(__('Invalid keyword'));
+        }
+        
+        $this->set('keyword', $this->Keyword->read(null, $id));
+        $this->set('engine_list', $engine_list);
+        
+        $fields = array('Ranklog.id', 'Ranklog.url', 'Ranklog.rank', 'Ranklog.rankdate');
+        $conds = array();
+        $conds['Ranklog.keyword_id'] = $id;
+        $conds['Keyword.UserID'] = $this->Auth->user('user.id');
+        
+        $data_rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 30, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.rankdate DESC'));
+		
+		if($this->request->is('post')) {
+            if($this->request->is('ajax')){
+            	// lower form
+            	$this->autoRender = false;
+                Configure::write('debug', 0);
+                
+                $rankDate = explode('-', $this->request->data['RankDate']);
+                $beginDate = str_replace('/','-', trim($rankDate[0]));
+                $endDate = str_replace('/','-', trim($rankDate[1]));
+                $days = $this->dateDiff($beginDate, $endDate);
+                
+                if($days <= 30){
+                    $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m-%d")'] = $this->forDate($beginDate,$endDate,5);
+                }else if($days>=31 && $days <=60){
+                    $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m-%d")'] = $this->forDate($beginDate,$endDate,7);
+                }else if($days>=61 && $days <=90){
+                    $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m-%d")'] = $this->forDate($beginDate,$endDate,10);
+                }else if($days>=91 && $days <=120){
+                    $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m-%d")'] = $this->forDate($beginDate,$endDate,15);
+                }else if($days >120){
+                    $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m-%d")'] = $this->forDate($beginDate,$endDate,20);
+                }               
+                $conds['Ranklog.rankdate BETWEEN ? AND ?'] = array(str_replace('/','', trim($rankDate[0])), str_replace('/','', trim($rankDate[1])));
+                
+                $rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+				
+                foreach($rankhistories as $key=>$rankhistory){
+                	$rank = json_decode($rankhistory['Ranklog']['rank'], true);
+                    $rankhistories[$key]['Ranklog']['rankdate'] = $rankhistory['Ranklog']['rankdate'];
+                    $google_rank = $rank['google_jp'];
+                    $yahoo_rank = $rank['yahoo_jp'];
+                    
+                   if($google_rank==0 && $yahoo_rank!=0){
+                        $rankhistories[$key]['Ranklog']['google_jp'] = 100;
+                        $rankhistories[$key]['Ranklog']['yahoo_jp'] = $yahoo_rank; 
+                    }else if ($yahoo_rank==0 && $google_rank!=0){
+                        $rankhistories[$key]['Ranklog']['yahoo_jp'] = 100;
+                        $rankhistories[$key]['Ranklog']['google_jp'] = $google_rank;                                                  
+                    }else if ($google_rank == 0 && $yahoo_rank==0){
+                        $rankhistories[$key]['Ranklog']['google_jp'] = 100;
+                        $rankhistories[$key]['Ranklog']['yahoo_jp'] = 100;
+                    }else{
+                        $rankhistories[$key]['Ranklog']['google_jp'] = $google_rank;
+                        $rankhistories[$key]['Ranklog']['yahoo_jp'] = $yahoo_rank;                                                        
+                    }                   
+                }
+             
+                return json_encode($rankhistories);
+				
+            }else{
+            	// upper form
+                $rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 10, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+                $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m")'] = $this->request->data['Ranklog']['RankDate_list']['year'].'-'.$this->request->data['Ranklog']['RankDate_list']['month'];
+                $data_rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+				$this->set(compact('rankhistories'));
+            }                   
+            
+        } else {
+        	// default load
+            if(count($data_rankhistories)>0){
+                $rankhistories = array_slice($data_rankhistories, 0, 10);
+            }else{
+                $rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 10, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+            }
+            
+            if(count($rankhistories)==0){
+                throw new NotFoundException(__('Invalid keyword'));
+            }
+            $this->set(compact('rankhistories'));
+        }
+        
+        $today_rank = 0;
+        foreach($rankhistories as $rankhistory) {
+            if($rankhistory['Ranklog']['rankdate'] == date('Ymd') && $rankhistory['Ranklog']['rank'] != ''){
+                $today_rank = 1;
+            }
+        }
+        $this->set('today_rank', $today_rank);
+        $this->set(compact('data_rankhistories'));
+    }
+
 /**
 * add method
 *

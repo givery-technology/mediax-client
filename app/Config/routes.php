@@ -27,7 +27,7 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	
-	Router::connect('/', array('controller' => 'rankhistories', 'action' => 'client_index'));
+	Router::connect('/', array('controller' => 'ranklogs'));
 	Router::connect('/users/login', array('controller' => 'users', 'action' => 'login'));
 /**
  * ...and connect the rest of 'Pages' controller's urls.
