@@ -267,7 +267,7 @@ class KeywordsController extends AppController {
                 }               
                 $conds['Ranklog.rankdate BETWEEN ? AND ?'] = array(str_replace('/','', trim($rankDate[0])), str_replace('/','', trim($rankDate[1])));
                 
-                $rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+                $rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.rankdate DESC'));
 				
                 foreach($rankhistories as $key=>$rankhistory){
                 	$rank = json_decode($rankhistory['Ranklog']['rank'], true);
@@ -296,7 +296,7 @@ class KeywordsController extends AppController {
             	// upper form
                 $rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 10, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
                 $conds['DATE_FORMAT(Ranklog.rankdate,"%Y-%m")'] = $this->request->data['Ranklog']['RankDate_list']['year'].'-'.$this->request->data['Ranklog']['RankDate_list']['month'];
-                $data_rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+                $data_rankhistories = $this->Keyword->Ranklog->find('all',array('conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.rankdate DESC'));
 				$this->set(compact('rankhistories'));
             }                   
             
@@ -305,7 +305,7 @@ class KeywordsController extends AppController {
             if(count($data_rankhistories)>0){
                 $rankhistories = array_slice($data_rankhistories, 0, 10);
             }else{
-                $rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 10, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.id DESC'));
+                $rankhistories = $this->Keyword->Ranklog->find('all',array('limit' => 10, 'conditions' => $conds, 'fields' => $fields, 'order' => 'Ranklog.rankdate DESC'));
             }
             
             if(count($rankhistories)==0){
