@@ -2,7 +2,6 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
 				<h4 class="modal-title">
 					<span class="status"><?php echo $this->Layout->notice_label($param['label']); ?></span><?php echo $param['title']; ?>
 					<span class="date size18"><?php echo $param['created']; ?></span>
@@ -17,8 +16,7 @@
 				<button type="button" class="btn btn-primary" data-dismiss="modal">
 					確認
 				</button>
-				<!-- <button type="button" class="btn btn-primary">Save</button> -->
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+		</div>
+	</div>
 </div>
