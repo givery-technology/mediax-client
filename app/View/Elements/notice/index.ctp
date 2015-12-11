@@ -29,7 +29,7 @@
 										array('role'=>'button', 'class'=>'','data-toggle'=>'modal','link'=>Router::url(array('notices'=>true,'controller'=>'notices','action' => 'view_notice', 'id'=>$notice['Notice']['id'])))
 									); 
 								?>
-								<?php echo $this->element('modal/notice_view', array('param'=>$notice['Notice'])); ?>
+								<?php echo $this->element('modal/notice_view', array('param'=>str_replace("\n","<br />",$notice['Notice']))); ?>
 							</td>
 						</tr>
 					<?php endforeach; ?>
