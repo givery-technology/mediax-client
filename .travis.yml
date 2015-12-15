@@ -1,4 +1,8 @@
 language: php
+install: composer install
+cache:
+ directories:
+   - vendor
 
 php:
   - 5.5
@@ -27,11 +31,13 @@ before_script:
   - echo "Before Script"
   - composer show --installed
   - date
+  - ./vendor/bin/phpcs --config-set installed_paths $(pwd)/vendor/cakephp/cakephp-codesniffer
 
 script:
   - echo "Running test script"
   - date
   - env
+  - ./vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./app
 
 notifications:
   email: false
