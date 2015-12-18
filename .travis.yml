@@ -37,7 +37,7 @@ script:
   - echo "Running test script"
   - date
   - env
-  - ./vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./app
+# - ./vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./app
 
 notifications:
   email: false
