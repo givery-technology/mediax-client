@@ -37,8 +37,8 @@ script:
   - echo "Running test script"
   - date
   - env
-  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./app"
-  # - ./vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./app // no support on 2x
+  # - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./app"
+  - ./vendor/bin/phpcs -p --extensions=php --standard=CakePHP ./app // no support on 2x
   - ./vendor/bin/phpcbf -p --extension=php --standard=CakePHP ./app
 
 notifications:
