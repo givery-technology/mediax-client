@@ -1,6 +1,8 @@
 #MediaX Client
 =======
 
+[![Build Status](https://api.travis-ci.org/givery-technology/mediax-client.svg)](https://travis-ci.org/givery-technology/mediax-client)
+
 ## Dev Server
 Dev: http://mediax.dev-ic.com/mediax.client
 
