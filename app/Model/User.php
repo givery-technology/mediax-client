@@ -5,9 +5,10 @@ App::uses('AppModel', 'Model');
  *
  * @property Keyword $Keyword
  */
-class User extends AppModel {
+class User extends AppModel
+{
 
-        public $actsAs = array('Containable');
+    public $actsAs = ['Containable'];
 /**
  * Use table
  *
@@ -28,44 +29,44 @@ class User extends AppModel {
  *
  * @var array
  */
-    public $validate = array(
-        'pwd' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+    public $validate = [
+        'pwd' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 'on' => 'create'
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'email' => array(
-            'email' => array(
-                'rule' => array('email'),
+            ],
+        ],
+        'email' => [
+            'email' => [
+                'rule' => ['email'],
                 'message' => 'Eメールを記入してください',
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-            'unique' => array(
+            ],
+            'unique' => [
                 'rule' => 'isUnique',
                 'message' => 'このEメールは事前に登録しました。',
-            ),          
-        ),
-        'company' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'company' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     //The Associations below have been created with all possible keys, those that are not needed can be removed
 
@@ -74,8 +75,8 @@ class User extends AppModel {
  *
  * @var array
  */
-    public $hasMany = array(
-        'Keyword' => array(
+    public $hasMany = [
+        'Keyword' => [
             'className' => 'Keyword',
             'foreignKey' => 'UserID',
             'dependent' => false,
@@ -87,8 +88,8 @@ class User extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        ),
-        'Contactus' => array(
+        ],
+        'Contactus' => [
             'className' => 'Contactus',
             'foreignKey' => 'userid',
             'dependent' => false,
@@ -100,7 +101,6 @@ class User extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        )
-    );
-
+        ]
+    ];
 }

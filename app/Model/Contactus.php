@@ -5,37 +5,38 @@ App::uses('AppModel', 'Model');
  *
  * @property User $User
  */
-class Contactus extends AppModel {
+class Contactus extends AppModel
+{
 
 /**
  * Use table
  *
  * @var mixed False or table name
  */
-	public $useTable = 'contactus';
+    public $useTable = 'contactus';
 
 /**
  * Display field
  *
  * @var string
  */
-	public $displayField = 'id';
+    public $displayField = 'id';
 
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations
  *
  * @var array
  */
-	public $belongsTo = array(
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'userid',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    public $belongsTo = [
+        'User' => [
+            'className' => 'User',
+            'foreignKey' => 'userid',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ]
+    ];
 }

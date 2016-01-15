@@ -14,7 +14,8 @@ App::uses('AppModel', 'Model');
  * Keyword Model
  *
  */
-class Keyword extends AppModel {
+class Keyword extends AppModel
+{
 
 /**
  * Primary key field
@@ -37,7 +38,7 @@ class Keyword extends AppModel {
  *
  * @var array
  */
-    public $hasOne = array(
+    public $hasOne = [
         /*'Duration' => array(
             'className' => 'Duration',
             'foreignKey' => 'KeyID',
@@ -45,30 +46,30 @@ class Keyword extends AppModel {
             'fields' => '',
             'order' => ''
         )*/
-    );
+    ];
 
 /**
  * belongsTo associations
  *
  * @var array
  */
-    public $belongsTo = array(
-        'User' => array(
+    public $belongsTo = [
+        'User' => [
             'className' => 'User',
             'foreignKey' => 'UserID',
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        )
-    );
+        ]
+    ];
 
 /**
  * hasMany associations
  *
  * @var array
  */
-    public $hasMany = array(
-        'Rankhistory' => array(
+    public $hasMany = [
+        'Rankhistory' => [
             'className' => 'Rankhistory',
             'foreignKey' => 'KeyID',
             'dependent' => false,
@@ -80,22 +81,22 @@ class Keyword extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        ),
-        'Extra' => array(
+        ],
+        'Extra' => [
             'className' => 'Extra',
             'foreignKey' => 'KeyID',
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        ),
-        'Duration' => array(
+        ],
+        'Duration' => [
             'className' => 'Duration',
             'foreignKey' => 'KeyID',
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        ),
-        'Ranklog' => array(
+        ],
+        'Ranklog' => [
             'className' => 'Ranklog',
             'foreignKey' => 'keyword_id',
             'dependent' => false,
@@ -107,102 +108,102 @@ class Keyword extends AppModel {
             'exclusive' => '',
             'finderQuery' => '',
             'counterQuery' => ''
-        ),
-    );
+        ],
+    ];
 
 /**
  * Validation rules
  *
  * @var array
  */
-    public $validate = array(
-        'UserID' => array(
-            'numeric' => array(
-                'rule' => array('numeric'),
+    public $validate = [
+        'UserID' => [
+            'numeric' => [
+                'rule' => ['numeric'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'Keyword' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'Keyword' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-            'hankaku' => array(
-                'rule'=> array('hanKaku'),
+            ],
+            'hankaku' => [
+                'rule'=> ['hanKaku'],
                 'message' => '英文また数字は全て半角です。'
-            ),
-        ),
-        'Url' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'Url' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'Engine' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'Engine' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'Strict' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'Strict' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'seika' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'seika' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-        'nocontract' => array(
-            'notempty' => array(
-                'rule' => array('notempty'),
+            ],
+        ],
+        'nocontract' => [
+            'notempty' => [
+                'rule' => ['notempty'],
                 //'message' => 'Your custom message here',
                 //'allowEmpty' => false,
                 //'required' => false,
                 //'last' => false, // Stop validation after this rule
                 //'on' => 'create', // Limit validation to 'create' or 'update' operations
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
 /**
  * CSV export
  *
  * @var array
- */ 
-    public $actsAs = array(
-        'CsvExport' => array(
+ */
+    public $actsAs = [
+        'CsvExport' => [
             'delimiter' => ',', //The delimiter for the values, default is ;
             'enclosure' => '"', //The enclosure, default is "
             'max_execution_time' => 360, //Increase for Models with lots of data, has no effect is php safemode is enabled.
             'encoding' => 'utf8' //Prefixes the return file with a BOM and attempts to utf_encode() data
-        )
-    );
+        ]
+    ];
 }

@@ -5,37 +5,38 @@ App::uses('AppModel', 'Model');
  *
  * @property Keyword $Keyword
  */
-class Duration extends AppModel {
+class Duration extends AppModel
+{
 
 /**
  * Primary key field
  *
  * @var string
  */
-	public $primaryKey = 'ID';
+    public $primaryKey = 'ID';
 
 /**
  * Display field
  *
  * @var string
  */
-	public $displayField = 'ID';
+    public $displayField = 'ID';
 
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+    //The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations
  *
  * @var array
  */
-	public $belongsTo = array(
-		'Keyword' => array(
-			'className' => 'Keyword',
-			'foreignKey' => 'KeyID',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
+    public $belongsTo = [
+        'Keyword' => [
+            'className' => 'Keyword',
+            'foreignKey' => 'KeyID',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ]
+    ];
 }
