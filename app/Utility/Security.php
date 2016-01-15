@@ -25,21 +25,22 @@ App::uses('String', 'Utility');
  *
  * @package       Cake.Utility
  */
-class Security {
+class Security
+{
 
 /**
  * Default hash method
  *
  * @var string
  */
-	public static $hashType = null;
+    public static $hashType = null;
 
 /**
  * Default cost
  *
  * @var string
  */
-	public static $hashCost = '10';
+    public static $hashCost = '10';
 
 /**
  * Get allowed minutes of inactivity based on security level.
@@ -47,26 +48,28 @@ class Security {
  * @deprecated Exists for backwards compatibility only, not used by the core
  * @return integer Allowed inactivity in minutes
  */
-	public static function inactiveMins() {
-		switch (Configure::read('Security.level')) {
-			case 'high':
-				return 10;
-			case 'medium':
-				return 100;
-			case 'low':
-			default:
-				return 300;
-		}
-	}
+    public static function inactiveMins()
+    {
+        switch (Configure::read('Security.level')) {
+            case 'high':
+                return 10;
+            case 'medium':
+                return 100;
+            case 'low':
+            default:
+                return 300;
+        }
+    }
 
 /**
  * Generate authorization hash.
  *
  * @return string Hash
  */
-	public static function generateAuthKey() {
-		return Security::hash(String::uuid());
-	}
+    public static function generateAuthKey()
+    {
+        return Security::hash(String::uuid());
+    }
 
 /**
  * Validate authorization hash.
@@ -74,9 +77,10 @@ class Security {
  * @param string $authKey Authorization hash
  * @return boolean Success
  */
-	public static function validateAuthKey($authKey) {
-		return true;
-	}
+    public static function validateAuthKey($authKey)
+    {
+        return true;
+    }
 
 /**
  * Create a hash from string using given method or fallback on next available method.
@@ -94,7 +98,7 @@ class Security {
  * Creating a blowfish/bcrypt hash:
  *
  * {{{
- * 	$hash = Security::hash($password, 'blowfish');
+ *  $hash = Security::hash($password, 'blowfish');
  * }}}
  *
  * @param string $string String to hash
@@ -104,8 +108,9 @@ class Security {
  *     must be false or a previously generated salt.
  * @return string Hash
  */
-	public static function hash($string, $type = null, $salt = false) {
-		/*
+    public static function hash($string, $type = null, $salt = false)
+    {
+        /*
 		if (empty($type)) {
 			$type = self::$hashType;
 		}
@@ -136,8 +141,8 @@ class Security {
 			return hash($type, $string);
 		}
 		*/
-		return md5($string);
-	}
+        return md5($string);
+    }
 
 /**
  * Sets the default hash method for the Security object. This affects all objects using
@@ -147,27 +152,29 @@ class Security {
  * @return void
  * @see Security::hash()
  */
-	public static function setHash($hash) {
-		self::$hashType = $hash;
-	}
+    public static function setHash($hash)
+    {
+        self::$hashType = $hash;
+    }
 
 /**
  * Sets the cost for they blowfish hash method.
  *
- * @param integer $cost Valid values are 4-31
+ * @param int $cost Valid values are 4-31
  * @return void
  */
-	public static function setCost($cost) {
-		if ($cost < 4 || $cost > 31) {
-			trigger_error(__d(
-				'cake_dev',
-				'Invalid value, cost must be between %s and %s',
-				array(4, 31)
-			), E_USER_WARNING);
-			return null;
-		}
-		self::$hashCost = $cost;
-	}
+    public static function setCost($cost)
+    {
+        if ($cost < 4 || $cost > 31) {
+            trigger_error(__d(
+                'cake_dev',
+                'Invalid value, cost must be between %s and %s',
+                [4, 31]
+            ), E_USER_WARNING);
+            return null;
+        }
+        self::$hashCost = $cost;
+    }
 
 /**
  * Runs $text through a XOR cipher.
@@ -184,26 +191,27 @@ class Security {
  * @return string Encrypted/Decrypted string
  * @deprecated This method will be removed in 3.x
  */
-	public static function cipher($text, $key) {
-		if (empty($key)) {
-			trigger_error(__d('cake_dev', 'You cannot use an empty key for Security::cipher()'), E_USER_WARNING);
-			return '';
-		}
+    public static function cipher($text, $key)
+    {
+        if (empty($key)) {
+            trigger_error(__d('cake_dev', 'You cannot use an empty key for Security::cipher()'), E_USER_WARNING);
+            return '';
+        }
 
-		srand(Configure::read('Security.cipherSeed'));
-		$out = '';
-		$keyLength = strlen($key);
-		for ($i = 0, $textLength = strlen($text); $i < $textLength; $i++) {
-			$j = ord(substr($key, $i % $keyLength, 1));
-			while ($j--) {
-				rand(0, 255);
-			}
-			$mask = rand(0, 255);
-			$out .= chr(ord(substr($text, $i, 1)) ^ $mask);
-		}
-		srand();
-		return $out;
-	}
+        srand(Configure::read('Security.cipherSeed'));
+        $out = '';
+        $keyLength = strlen($key);
+        for ($i = 0, $textLength = strlen($text); $i < $textLength; $i++) {
+            $j = ord(substr($key, $i % $keyLength, 1));
+            while ($j--) {
+                rand(0, 255);
+            }
+            $mask = rand(0, 255);
+            $out .= chr(ord(substr($text, $i, 1)) ^ $mask);
+        }
+        srand();
+        return $out;
+    }
 
 /**
  * Encrypts/Decrypts a text using the given key using rijndael method.
@@ -217,55 +225,57 @@ class Security {
  * @param string $operation Operation to perform, encrypt or decrypt
  * @return string Encrypted/Decrypted string
  */
-	public static function rijndael($text, $key, $operation) {
-		if (empty($key)) {
-			trigger_error(__d('cake_dev', 'You cannot use an empty key for Security::rijndael()'), E_USER_WARNING);
-			return '';
-		}
-		if (empty($operation) || !in_array($operation, array('encrypt', 'decrypt'))) {
-			trigger_error(__d('cake_dev', 'You must specify the operation for Security::rijndael(), either encrypt or decrypt'), E_USER_WARNING);
-			return '';
-		}
-		if (strlen($key) < 32) {
-			trigger_error(__d('cake_dev', 'You must use a key larger than 32 bytes for Security::rijndael()'), E_USER_WARNING);
-			return '';
-		}
-		$algorithm = MCRYPT_RIJNDAEL_256;
-		$mode = MCRYPT_MODE_CBC;
-		$ivSize = mcrypt_get_iv_size($algorithm, $mode);
+    public static function rijndael($text, $key, $operation)
+    {
+        if (empty($key)) {
+            trigger_error(__d('cake_dev', 'You cannot use an empty key for Security::rijndael()'), E_USER_WARNING);
+            return '';
+        }
+        if (empty($operation) || !in_array($operation, ['encrypt', 'decrypt'])) {
+            trigger_error(__d('cake_dev', 'You must specify the operation for Security::rijndael(), either encrypt or decrypt'), E_USER_WARNING);
+            return '';
+        }
+        if (strlen($key) < 32) {
+            trigger_error(__d('cake_dev', 'You must use a key larger than 32 bytes for Security::rijndael()'), E_USER_WARNING);
+            return '';
+        }
+        $algorithm = MCRYPT_RIJNDAEL_256;
+        $mode = MCRYPT_MODE_CBC;
+        $ivSize = mcrypt_get_iv_size($algorithm, $mode);
 
-		$cryptKey = substr($key, 0, 32);
+        $cryptKey = substr($key, 0, 32);
 
-		if ($operation === 'encrypt') {
-			$iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
-			return $iv . '$$' . mcrypt_encrypt($algorithm, $cryptKey, $text, $mode, $iv);
-		}
-		// Backwards compatible decrypt with fixed iv
-		if (substr($text, $ivSize, 2) !== '$$') {
-			$iv = substr($key, strlen($key) - 32, 32);
-			return rtrim(mcrypt_decrypt($algorithm, $cryptKey, $text, $mode, $iv), "\0");
-		}
-		$iv = substr($text, 0, $ivSize);
-		$text = substr($text, $ivSize + 2);
-		return rtrim(mcrypt_decrypt($algorithm, $cryptKey, $text, $mode, $iv), "\0");
-	}
+        if ($operation === 'encrypt') {
+            $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
+            return $iv . '$$' . mcrypt_encrypt($algorithm, $cryptKey, $text, $mode, $iv);
+        }
+        // Backwards compatible decrypt with fixed iv
+        if (substr($text, $ivSize, 2) !== '$$') {
+            $iv = substr($key, strlen($key) - 32, 32);
+            return rtrim(mcrypt_decrypt($algorithm, $cryptKey, $text, $mode, $iv), "\0");
+        }
+        $iv = substr($text, 0, $ivSize);
+        $text = substr($text, $ivSize + 2);
+        return rtrim(mcrypt_decrypt($algorithm, $cryptKey, $text, $mode, $iv), "\0");
+    }
 
 /**
  * Generates a pseudo random salt suitable for use with php's crypt() function.
  * The salt length should not exceed 27. The salt will be composed of
  * [./0-9A-Za-z]{$length}.
  *
- * @param integer $length The length of the returned salt
+ * @param int $length The length of the returned salt
  * @return string The generated salt
  */
-	protected static function _salt($length = 22) {
-		$salt = str_replace(
-			array('+', '='),
-			'.',
-			base64_encode(sha1(uniqid(Configure::read('Security.salt'), true), true))
-		);
-		return substr($salt, 0, $length);
-	}
+    protected static function _salt($length = 22)
+    {
+        $salt = str_replace(
+            ['+', '='],
+            '.',
+            base64_encode(sha1(uniqid(Configure::read('Security.salt'), true), true))
+        );
+        return substr($salt, 0, $length);
+    }
 
 /**
  * One way encryption using php's crypt() function. To use blowfish hashing see ``Security::hash()``
@@ -274,21 +284,21 @@ class Security {
  * @param mixed $salt false to generate a new salt or an existing salt.
  * @return string The hashed string or an empty string on error.
  */
-	protected static function _crypt($password, $salt = false) {
-		if ($salt === false) {
-			$salt = self::_salt(22);
-			$salt = vsprintf('$2a$%02d$%s', array(self::$hashCost, $salt));
-		}
+    protected static function _crypt($password, $salt = false)
+    {
+        if ($salt === false) {
+            $salt = self::_salt(22);
+            $salt = vsprintf('$2a$%02d$%s', [self::$hashCost, $salt]);
+        }
 
-		if ($salt === true || strpos($salt, '$2a$') !== 0 || strlen($salt) < 29) {
-			trigger_error(__d(
-				'cake_dev',
-				'Invalid salt: %s for %s Please visit http://www.php.net/crypt and read the appropriate section for building %s salts.',
-				array($salt, 'blowfish', 'blowfish')
-			), E_USER_WARNING);
-			return '';
-		}
-		return crypt($password, $salt);
-	}
-
+        if ($salt === true || strpos($salt, '$2a$') !== 0 || strlen($salt) < 29) {
+            trigger_error(__d(
+                'cake_dev',
+                'Invalid salt: %s for %s Please visit http://www.php.net/crypt and read the appropriate section for building %s salts.',
+                [$salt, 'blowfish', 'blowfish']
+            ), E_USER_WARNING);
+            return '';
+        }
+        return crypt($password, $salt);
+    }
 }

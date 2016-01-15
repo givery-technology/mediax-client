@@ -1,90 +1,93 @@
 <?php
 App::uses('Component', 'Controller');
 
-class UploadComponent extends Component {
-    var $contentType = array('image/jpg','image/bmp','image/jpeg','image/gif','image/png','image/pjpg','image/pbmp','image/pjpeg','image/ppng','image/pgif');
+class UploadComponent extends Component
+{
+    var $contentType = ['image/jpg','image/bmp','image/jpeg','image/gif','image/png','image/pjpg','image/pbmp','image/pjpeg','image/ppng','image/pgif'];
 
-    function delete_image($filename) {
+    function delete_image($filename)
+    {
         unlink($filename);
     }
 
-    function uploadImage($folder, $file, $thumb_size='', $itemId = null, $image_name = null) {
+    function uploadImage($folder, $file, $thumb_size = '', $itemId = null, $image_name = null)
+    {
         // setup dir names absolute and relative
         $folder_url = WWW_ROOT.$folder;
         $rel_url = $folder;
-        $result = array();
+        $result = [];
 
         // create the folder if it does not exist
-        if(!is_dir($folder_url)) {
+        if (!is_dir($folder_url)) {
             mkdir($folder_url);
         }
         // if itemId is set create an item folder
-        if($itemId) {
+        if ($itemId) {
             // set new absolute folder
             $folder_url = WWW_ROOT.$folder.'/'.$itemId;
             // set new relative folder
             $rel_url = $folder.'/'.$itemId;
             // create directory
-            if(!is_dir($folder_url)) {
+            if (!is_dir($folder_url)) {
                 mkdir($folder_url);
             }
         }
 
         // list of permitted file types, this is only images but documents can be added
-        $permitted = array('image/gif','image/jpeg','image/pjpeg','image/png');
+        $permitted = ['image/gif','image/jpeg','image/pjpeg','image/png'];
         // print_r($file);
         // replace spaces with underscores
-        if(!empty($file['name'])) {
-			/*@rename image : name image same as image_name, delete here if other project*/  
-			if($image_name) {
-				$image_name = str_replace(' ', '_', $image_name);
-				$filename = $image_name.strrchr($file['name'], '.'); 
-			}else{
-				$filename = str_replace(' ', '_', $file['name']);
-			}
-			/*@rename image*/			
+        if (!empty($file['name'])) {
+            /*@rename image : name image same as image_name, delete here if other project*/
+            if ($image_name) {
+                $image_name = str_replace(' ', '_', $image_name);
+                $filename = $image_name.strrchr($file['name'], '.');
+            } else {
+                $filename = str_replace(' ', '_', $file['name']);
+            }
+            /*@rename image*/
             
             // assume filetype is false
             $typeOK = true;
             // check filetype is ok
-            foreach($permitted as $type) {
-                if($type == $file['type']) {
+            foreach ($permitted as $type) {
+                if ($type == $file['type']) {
                     $typeOK = true;
                     break;
                 }
             }
             // if file type ok upload the file
-            if($typeOK) {
+            if ($typeOK) {
                 // switch based on error code
-                switch($file['error']) {
+                switch ($file['error']) {
                     case 0:
                     // check filename already exists
                         $now = '';
-						if(!empty($image_name)){
-							$url = $rel_url.'/'.$filename;
-							// upload the file
-							$success = move_uploaded_file($file['tmp_name'], $url);
-						}else{
-							if(!file_exists($folder_url.'/'.$filename)) {
-								// create full filename
-								$full_url = $folder_url.'/'.$filename;
-								$url = $rel_url.'/'.$filename;
-								// upload the file
-								$success = move_uploaded_file($file['tmp_name'], $url);
-							} else {
-								// create unique filename and upload file
-								ini_set('date.timezone', 'Europe/London');
-								$now = time();
-								$full_url = $folder_url.'/'.$now.$filename;
+                        if (!empty($image_name)) {
+                            $url = $rel_url.'/'.$filename;
+                            // upload the file
+                            $success = move_uploaded_file($file['tmp_name'], $url);
+                        } else {
+                            if (!file_exists($folder_url.'/'.$filename)) {
+                                // create full filename
+                                $full_url = $folder_url.'/'.$filename;
+                                $url = $rel_url.'/'.$filename;
+                                // upload the file
+                                $success = move_uploaded_file($file['tmp_name'], $url);
+                            } else {
+                                // create unique filename and upload file
+                                ini_set('date.timezone', 'Europe/London');
+                                $now = time();
+                                $full_url = $folder_url.'/'.$now.$filename;
 
-								$url = $rel_url.'/'.$now.$filename;
-								$success = move_uploaded_file($file['tmp_name'], $url);
-							}
-						}
+                                $url = $rel_url.'/'.$now.$filename;
+                                $success = move_uploaded_file($file['tmp_name'], $url);
+                            }
+                        }
                         
              
                         // if upload was successful
-                        if($success) {
+                        if ($success) {
                             // save the url of the file
                             $result['urls'] = $url;
                             $result['filename'] = $now.$filename;
@@ -93,11 +96,11 @@ class UploadComponent extends Component {
                             $result['name'] = $now.$filename;
 
 
-                            if($thumb_size) {
+                            if ($thumb_size) {
                                 $thumbFolder = $folder_url.'/thumb';
                                 $this->resize_img($folder_url.'/'.$result['filename'], $thumb_size, $thumbFolder.'/'.$result['filename']);
                                 chmod($folder_url.'/'.$result['filename'], 0777);
-                                chmod($thumbFolder.'/'.$result['filename'],0777);
+                                chmod($thumbFolder.'/'.$result['filename'], 0777);
                             }
 
                         } else {
@@ -113,7 +116,7 @@ class UploadComponent extends Component {
                         $result['errors'] = "System error uploading $filename. Contact webmaster.";
                         break;
                 }
-            } elseif($file['error'] == 4) {
+            } elseif ($file['error'] == 4) {
                 // no file was selected for upload
                 $result['nofiles'] = "No file Selected";
             } else {
@@ -125,56 +128,57 @@ class UploadComponent extends Component {
         return $result;
     }
 
-    function uploadFiles($folder, $formdata,$thumb='', $itemId = null) {
+    function uploadFiles($folder, $formdata, $thumb = '', $itemId = null)
+    {
         // setup dir names absolute and relative
         $folder_url = WWW_ROOT.$folder;
         $rel_url = $folder;
-        $result = array();
+        $result = [];
 
         // create the folder if it does not exist
-        if(!is_dir($folder_url)) {
+        if (!is_dir($folder_url)) {
             mkdir($folder_url);
         }
 
         // if itemId is set create an item folder
-        if($itemId) {
+        if ($itemId) {
             // set new absolute folder
             $folder_url = WWW_ROOT.$folder.'/'.$itemId;
             // set new relative folder
             $rel_url = $folder.'/'.$itemId;
             // create directory
-            if(!is_dir($folder_url)) {
+            if (!is_dir($folder_url)) {
                 mkdir($folder_url);
             }
         }
 
 
         // list of permitted file types, this is only images but documents can be added
-        $permitted = array('image/gif','image/jpeg','image/pjpeg','image/png');
+        $permitted = ['image/gif','image/jpeg','image/pjpeg','image/png'];
 
         // loop through and deal with the files
-        foreach($formdata as $file) {
+        foreach ($formdata as $file) {
             // print_r($file);
             // replace spaces with underscores
-            if(!empty($file['name'])) {
+            if (!empty($file['name'])) {
                 $filename = str_replace(' ', '_', $file['name']);
                 // assume filetype is false
                 $typeOK = false;
                 // check filetype is ok
-                foreach($permitted as $type) {
-                    if($type == $file['type']) {
+                foreach ($permitted as $type) {
+                    if ($type == $file['type']) {
                         $typeOK = true;
                         break;
                     }
                 }
                 // if file type ok upload the file
-                if($typeOK) {
+                if ($typeOK) {
                     // switch based on error code
-                    switch($file['error']) {
+                    switch ($file['error']) {
                         case 0:
                         // check filename already exists
                             $now = '';
-                            if(!file_exists($folder_url.'/'.$filename)) {
+                            if (!file_exists($folder_url.'/'.$filename)) {
                                 // create full filename
                                 $full_url = $folder_url.'/'.$filename;
                                 $url = $rel_url.'/'.$filename;
@@ -190,17 +194,17 @@ class UploadComponent extends Component {
                                 $success = move_uploaded_file($file['tmp_name'], $url);
                             }
                             // if upload was successful
-                            if($success) {
+                            if ($success) {
                                 // save the url of the file
                                 $result['urls'][] = $url;
                                 $result['filename'] = $now.$filename;
                                 $result['mfile'][] = $now.$filename;
 
-                                if($thumb) {
+                                if ($thumb) {
                                     $thumbFolder = $folder_url.'/thumb';
                                     $this->resize_img($folder_url.'/'.$result['filename'], $thumb, $thumbFolder.'/'.$result['filename']);
                                     chmod($folder_url.'/'.$result['filename'], 777);
-                                    chmod($thumbFolder.'/'.$result['filename'],777);
+                                    chmod($thumbFolder.'/'.$result['filename'], 777);
                                 }
 
                             } else {
@@ -216,7 +220,7 @@ class UploadComponent extends Component {
                             $result['errors'][] = "System error uploading $filename. Contact webmaster.";
                             break;
                     }
-                } elseif($file['error'] == 4) {
+                } elseif ($file['error'] == 4) {
                     // no file was selected for upload
                     $result['nofiles'][] = "No file Selected";
                 } else {
@@ -229,26 +233,27 @@ class UploadComponent extends Component {
         return $result;
     }
 
-    function uploadFile($folder, $file, $itemId = null) {
+    function uploadFile($folder, $file, $itemId = null)
+    {
 
         // setup dir names absolute and relative
         $folder_url = WWW_ROOT.$folder;
         $rel_url = $folder;
-        $result = array();
+        $result = [];
 
         // create the folder if it does not exist
-        if(!is_dir($folder_url)) {
+        if (!is_dir($folder_url)) {
             mkdir($folder_url);
         }
 
         // if itemId is set create an item folder
-        if($itemId) {
+        if ($itemId) {
             // set new absolute folder
             $folder_url = WWW_ROOT.$folder.'/'.$itemId;
             // set new relative folder
             $rel_url = $folder.'/'.$itemId;
             // create directory
-            if(!is_dir($folder_url)) {
+            if (!is_dir($folder_url)) {
                 mkdir($folder_url);
             }
         }
@@ -260,18 +265,18 @@ class UploadComponent extends Component {
 
 
         // replace spaces with underscores
-        if(!empty($file['name'])) {
+        if (!empty($file['name'])) {
             $filename = str_replace(' ', '_', $file['name']);
             // assume filetype is false
             $typeOK = true;
             // if file type ok upload the file
-            if($typeOK) {
+            if ($typeOK) {
                 // switch based on error code
-                switch($file['error']) {
+                switch ($file['error']) {
                     case 0:
                     // check filename already exists
                         $now = '';
-                        if(!file_exists($folder_url.'/'.$filename)) {
+                        if (!file_exists($folder_url.'/'.$filename)) {
                             // create full filename
                             $full_url = $folder_url.'/'.$filename;
                             $url = $rel_url.'/'.$filename;
@@ -287,7 +292,7 @@ class UploadComponent extends Component {
                             $success = move_uploaded_file($file['tmp_name'], $url);
                         }
                         // if upload was successful
-                        if($success) {
+                        if ($success) {
                             // save the url of the file
                             $result['urls'] = $url;
                             $result['filename'] = $now.$filename;
@@ -311,7 +316,7 @@ class UploadComponent extends Component {
                         $result['errors'][] = "System error uploading $filename. Contact webmaster.";
                         break;
                 }
-            } elseif($file['error'] == 4) {
+            } elseif ($file['error'] == 4) {
                 // no file was selected for upload
                 $result['nofiles'][] = "No file Selected";
             } else {
@@ -323,17 +328,19 @@ class UploadComponent extends Component {
 
         return $result;
     }
-    function deleteFile($folder, $filename) {
-        if(is_array($filename)){
-            foreach($filename as $file){
+    function deleteFile($folder, $filename)
+    {
+        if (is_array($filename)) {
+            foreach ($filename as $file) {
                 @unlink(WWW_ROOT . $folder . DS . $file);
             }
-        }else{
+        } else {
             @unlink(WWW_ROOT . $folder . DS . $filename);
         }
         
     }
-     function resize_img($tempFile, $size, $newFile) {
+    function resize_img($tempFile, $size, $newFile)
+    {
         $filetype = $this->getFileExtension($tempFile);
         $info = getimagesize($tempFile);
         $image_type = $info['mime'];
@@ -351,7 +358,7 @@ class UploadComponent extends Component {
                 break;
             case "png":
                 $img_src = imagecreatefrompng($tempFile);
-				break;
+                break;
             case "bmp":
                 $img_src = imagecreatefromwbmp($tempFile);
                 break;
@@ -367,11 +374,11 @@ class UploadComponent extends Component {
             $height = ($width / $true_width) * $true_height;
         } else {
             //anh bang nhau
-            if ($true_width == $true_height){
+            if ($true_width == $true_height) {
 
                   $width = $size[0];
                   $height =$size[1];
-            }else {
+            } else {
                  $height = $size[1];
                 //$width = ($height / $true_height) * $true_width;
                  $width = $size[0];
@@ -382,7 +389,7 @@ class UploadComponent extends Component {
         imagecopyresampled($img_des, $img_src, 0, 0, 0, 0, $width, $height, $true_width, $true_height);
         // Save the resized image
         switch ($filetype) {
-           case "jpeg":
+            case "jpeg":
             case "jpg":
                 imagejpeg($img_des, $newFile, 100);
                 break;
@@ -391,116 +398,118 @@ class UploadComponent extends Component {
                 break;
             case "png":
                 imagepng($img_des, $newFile, 9, null);
-				break;
+                break;
             case "bmp":
                 imagewbmp($img_des, $newFile, 100);
                 break;
         }
     }
 
-    function resize_imgbk($tempFile, $size, $newFile) {
+    function resize_imgbk($tempFile, $size, $newFile)
+    {
         $filetype = $this->getFileExtension($tempFile);
         $filetype = strtolower($filetype);
-        switch($filetype) {
+        switch ($filetype) {
             case "jpeg":
             case "jpg":
                 $img_src = imagecreatefromjpeg($tempFile);
                 break;
             case "gif":
-                $img_src = imagecreatefromgif ($tempFile);
+                $img_src = imagecreatefromgif($tempFile);
                 break;
             case "png":
-                $img_src = imagecreatefrompng ($tempFile);
+                $img_src = imagecreatefrompng($tempFile);
             case "bmp":
-                $img_src = imagecreatefromwbmp ($tempFile);
+                $img_src = imagecreatefromwbmp($tempFile);
                 break;
         }
         $true_width = imagesx($img_src);
         $true_height = imagesy($img_src);
 
-        $size = explode('x',strtolower($size));
+        $size = explode('x', strtolower($size));
         if ($true_width>=$true_height) {
             $width=$size[0];
             $height = ($width/$true_width)*$true_height;
-        }
-        else {
+        } else {
             $height=$size[1];
             $width = ($height/$true_height)*$true_width;
         }
-        $img_des = imagecreatetruecolor($width,$height);
-        imagecopyresampled ($img_des, $img_src, 0, 0, 0, 0, $width, $height, $true_width, $true_height);
+        $img_des = imagecreatetruecolor($width, $height);
+        imagecopyresampled($img_des, $img_src, 0, 0, 0, 0, $width, $height, $true_width, $true_height);
         // Save the resized image
-        switch($filetype) {
+        switch ($filetype) {
             case "jpeg":
             case "jpg":
-                imagejpeg($img_des,$newFile,80);
+                imagejpeg($img_des, $newFile, 80);
                 break;
             case "gif":
-                imagegif($img_des,$newFile,80);
+                imagegif($img_des, $newFile, 80);
                 break;
             case "png":
-                imagepng($img_des,$newFile,80);
+                imagepng($img_des, $newFile, 80);
             case "bmp":
-                imagewbmp($img_des,$newFile,80);
+                imagewbmp($img_des, $newFile, 80);
                 break;
         }
     }
-    function getFileExtension($str) {
-        $i = strrpos($str,".");
+    function getFileExtension($str)
+    {
+        $i = strrpos($str, ".");
         if (!$i) {
             return "";
         }
         $l = strlen($str) - $i;
-        $ext = substr($str,$i+1,$l);
+        $ext = substr($str, $i+1, $l);
         return $ext;
     }
 
 
-    function uploadImageFull($folder, $file, $thumb_size='', $itemId = null){       
+    function uploadImageFull($folder, $file, $thumb_size = '', $itemId = null)
+    {
         // setup dir names absolute and relative
         $folder_url = WWW_ROOT.$folder;
         $rel_url = $folder;
-        $result = array();
+        $result = [];
 
         // create the folder if it does not exist
-        if(!is_dir($folder_url)) {
+        if (!is_dir($folder_url)) {
             mkdir($folder_url);
         }
         // if itemId is set create an item folder
-        if($itemId) {
+        if ($itemId) {
             // set new absolute folder
             $folder_url = WWW_ROOT.$folder.'/'.$itemId;
             // set new relative folder
             $rel_url = $folder.'/'.$itemId;
             // create directory
-            if(!is_dir($folder_url)) {
+            if (!is_dir($folder_url)) {
                 mkdir($folder_url);
             }
         }
 
         // list of permitted file types, this is only images but documents can be added
-        $permitted = array('image/gif','image/jpeg','image/pjpeg','image/png');
+        $permitted = ['image/gif','image/jpeg','image/pjpeg','image/png'];
         // print_r($file);
         // replace spaces with underscores
-        if(!empty($file['name'])) {
+        if (!empty($file['name'])) {
             $filename = str_replace(' ', '_', $file['name']);
             // assume filetype is false
             $typeOK = false;
             // check filetype is ok
-            foreach($permitted as $type) {
-                if($type == $file['type']) {
+            foreach ($permitted as $type) {
+                if ($type == $file['type']) {
                     $typeOK = true;
                     break;
                 }
             }
             // if file type ok upload the file
-            if($typeOK) {
+            if ($typeOK) {
                 // switch based on error code
-                switch($file['error']) {
+                switch ($file['error']) {
                     case 0:
                     // check filename already exists
                         $now = '';
-                        if(!file_exists($folder_url.'/'.$filename)) {
+                        if (!file_exists($folder_url.'/'.$filename)) {
                             // create full filename
                             $full_url = $folder_url.'/'.$filename;
                             $url = $rel_url.'/'.$filename;
@@ -516,7 +525,7 @@ class UploadComponent extends Component {
                             $success = move_uploaded_file($file['tmp_name'], $url);
                         }
                         // if upload was successful
-                        if($success) {
+                        if ($success) {
                             // save the url of the file
                             $result['urls'] = $url;
                             $result['filename'] = $now.$filename;
@@ -525,15 +534,15 @@ class UploadComponent extends Component {
                             $result['name'] = $now.$filename;
 
 
-                            if($thumb_size) {
+                            if ($thumb_size) {
 
                                 $thumbFolder = $folder_url.'/thumb';
-                                 if(!is_dir($thumbFolder)) {
-                                                mkdir($thumbFolder);
-                                            }
+                                if (!is_dir($thumbFolder)) {
+                                               mkdir($thumbFolder);
+                                }
                                 $this->resize_img($folder_url.'/'.$result['filename'], $thumb_size, $thumbFolder.'/'.$result['filename']);
                                 chmod($folder_url.'/'.$result['filename'], 0777);
-                                chmod($thumbFolder.'/'.$result['filename'],0777);
+                                chmod($thumbFolder.'/'.$result['filename'], 0777);
                             }
 
                         } else {
@@ -549,7 +558,7 @@ class UploadComponent extends Component {
                         $result['errors'] = "System error uploading $filename. Contact webmaster.";
                         break;
                 }
-            } elseif($file['error'] == 4) {
+            } elseif ($file['error'] == 4) {
                 // no file was selected for upload
                 $result['nofiles'] = "No file Selected";
             } else {
@@ -561,4 +570,3 @@ class UploadComponent extends Component {
         return $result;
     }
 }
-?>

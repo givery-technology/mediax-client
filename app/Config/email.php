@@ -24,9 +24,9 @@
  * You can specify multiple configurations for production, development and testing.
  *
  * transport => The name of a supported transport; valid options are as follows:
- * 		Mail 		- Send using PHP mail function
- * 		Smtp		- Send using SMTP
- * 		Debug		- Do not send the email, just return the result
+ *      Mail        - Send using PHP mail function
+ *      Smtp        - Send using SMTP
+ *      Debug       - Do not send the email, just return the result
  *
  * You can add custom transports (or override existing transports) by adding the
  * appropriate file to app/Network/Email. Transports should be named 'YourTransport.php',
@@ -36,10 +36,11 @@
  * The origin email. See CakeEmail::from() about the valid values
  *
  */
-class EmailConfig {
+class EmailConfig
+{
 
-        public $default = array(
-            'from' => array('sem@givery.co.jp' => '株式会社ギブリー'),
+    public $default = [
+            'from' => ['sem@givery.co.jp' => '株式会社ギブリー'],
             'host' => 'localhost',
             'port' => 25,
             'timeout' => 30,
@@ -47,21 +48,21 @@ class EmailConfig {
             'log' => false,
                 //'charset' => 'utf-8',
                 //'headerCharset' => 'utf-8',
-        );
-		
-        public $smtp = array(
+        ];
+        
+    public $smtp = [
             'host' => 'ssl://smtp.gmail.com',
             'port' => 465,
             'username' => 'givery.semcheck@gmail.com',
             'password' => 'semcheck.givery',
             'transport' => 'Smtp',
             //'transport' => 'Mail',
-            'from' => array('givery.semcheck@gmail.com' => '株式会社ギブリー'),
+            'from' => ['givery.semcheck@gmail.com' => '株式会社ギブリー'],
             'charset' => 'utf-8',
             'headerCharset' => 'utf-8',
-        );
+        ];
         
-        public $fast = array(
+    public $fast = [
             'from' => 'you@localhost',
             'sender' => null,
             'to' => null,
@@ -90,6 +91,5 @@ class EmailConfig {
             'log' => true,
                 //'charset' => 'utf-8',
                 //'headerCharset' => 'utf-8',
-        );
-
+        ];
 }

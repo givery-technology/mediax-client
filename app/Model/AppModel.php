@@ -31,24 +31,27 @@ App::uses('Model', 'Model');
  *
  * @package       app.Model
  */
-class AppModel extends Model {
-    public function lastQuery() {
-	    $dbo = $this->getDatasource();
-	    $logs = $dbo->getLog();
-	    $lastLog = end($logs['log']);
-	    //return $logs;
-	    // return the first element of the last array (i.e. the last query)
-	    return $lastLog['query'];
+class AppModel extends Model
+{
+    public function lastQuery()
+    {
+        $dbo = $this->getDatasource();
+        $logs = $dbo->getLog();
+        $lastLog = end($logs['log']);
+        //return $logs;
+        // return the first element of the last array (i.e. the last query)
+        return $lastLog['query'];
     }
-	
-	/**
+    
+    /**
      * 全て半角
      * @param object $model
      * @param array $check 値
      */
-    function hanKaku($check) {
-	    $value = array_values($check);
-	    $value = $value[0];
-	    return preg_match('/^[a-zA-Z0-9ぁ-んァ-ヶ亜-黑ー中 ]+$/u', $value);
+    function hanKaku($check)
+    {
+        $value = array_values($check);
+        $value = $value[0];
+        return preg_match('/^[a-zA-Z0-9ぁ-んァ-ヶ亜-黑ー中 ]+$/u', $value);
     }
 }

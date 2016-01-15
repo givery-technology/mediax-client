@@ -14,7 +14,8 @@ App::uses('ModelBehavior', 'Model');
  * @license  http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link     http://www.croogo.org
  */
-class ParamsBehavior extends ModelBehavior {
+class ParamsBehavior extends ModelBehavior
+{
 
 /**
  * Setup
@@ -23,41 +24,43 @@ class ParamsBehavior extends ModelBehavior {
  * @param array $config
  * @return void
  */
-	public function setup(Model $model, $config = array()) {
-		if (is_string($config)) {
-			$config = array($config);
-		}
+    public function setup(Model $model, $config = [])
+    {
+        if (is_string($config)) {
+            $config = [$config];
+        }
 
-		$this->settings[$model->alias] = $config;
-	}
+        $this->settings[$model->alias] = $config;
+    }
 
 /**
  * afterFind callback
  *
  * @param Model $model
  * @param array $created
- * @param boolean $primary
+ * @param bool $primary
  * @return array
  */
-	public function afterFind(Model $model, $results, $primary) {
-		if ($primary && isset($results[0][$model->alias])) {
-			foreach ($results as $i => $result) {
-				$params = array();
-				if (isset($result[$model->alias]['params']) && strlen($result[$model->alias]['params']) > 0) {
-					$params = $this->paramsToArray($model, $result[$model->alias]['params']);
-				}
-				$results[$i]['Params'] = $params;
-			}
-		} elseif (isset($results[$model->alias])) {
-			$params = array();
-			if (isset($results[$model->alias]['params']) && strlen($results[$model->alias]['params']) > 0) {
-				$params = $this->paramsToArray($model, $results[$model->alias]['params']);
-			}
-			$results['Params'] = $params;
-		}
+    public function afterFind(Model $model, $results, $primary)
+    {
+        if ($primary && isset($results[0][$model->alias])) {
+            foreach ($results as $i => $result) {
+                $params = [];
+                if (isset($result[$model->alias]['params']) && strlen($result[$model->alias]['params']) > 0) {
+                    $params = $this->paramsToArray($model, $result[$model->alias]['params']);
+                }
+                $results[$i]['Params'] = $params;
+            }
+        } elseif (isset($results[$model->alias])) {
+            $params = [];
+            if (isset($results[$model->alias]['params']) && strlen($results[$model->alias]['params']) > 0) {
+                $params = $this->paramsToArray($model, $results[$model->alias]['params']);
+            }
+            $results['Params'] = $params;
+        }
 
-		return $results;
-	}
+        return $results;
+    }
 
 /**
  * Converts a string of params to an array of formatted key/value pairs
@@ -70,22 +73,22 @@ class ParamsBehavior extends ModelBehavior {
  * @param string $params
  * @return array
  */
-	public function paramsToArray(Model $model, $params) {
-		$output = array();
-		$params = preg_split('/[\r\n]+/', $params);
-		foreach ($params as $param) {
-			if (strlen($param) == 0) {
-				continue;
-			}
+    public function paramsToArray(Model $model, $params)
+    {
+        $output = [];
+        $params = preg_split('/[\r\n]+/', $params);
+        foreach ($params as $param) {
+            if (strlen($param) == 0) {
+                continue;
+            }
 
-			$paramE = explode('=', $param);
-			if (count($paramE) == 2) {
-				$key = $paramE['0'];
-				$value = $paramE['1'];
-				$output[$key] = trim($value);
-			}
-		}
-		return $output;
-	}
-
+            $paramE = explode('=', $param);
+            if (count($paramE) == 2) {
+                $key = $paramE['0'];
+                $value = $paramE['1'];
+                $output[$key] = trim($value);
+            }
+        }
+        return $output;
+    }
 }
